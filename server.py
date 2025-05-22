@@ -1,3 +1,8 @@
+'''
+Executing this function initiates the application of emotion
+analysis to be executed over the Flask channel and deployed on
+localhost:5000.
+'''
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
@@ -13,18 +18,13 @@ def emotion_analyzer():
     '''
     text_to_analyze = request.args.get("textToAnalyze")
     response = emotion_detector(text_to_analyze)
-
-    # Check if string is empty, check if empty after strip invalid characters 
     if response['dominant_emotion'] is None:
         return "Invalid text. Please try again"
-    
-    
-    message = f'''For the given statement, the system response is 
+    message = f'''For the given statement, the system response is
     'anger': {response['anger']}, 'disgust': {response['disgust']},
     'fear': {response['fear']}, 'joy': {response['joy']} and 
     'sadness': {response['sadness']}. The dominant emotion is 
     {response['dominant_emotion']}'''
-
     return message
 
 @app.route("/")
@@ -36,6 +36,3 @@ def render_index_page():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
-
-#if text_to_analyze == '' or (text_to_analyze.strip("!@#$%^&*()-'\"_=+,.<>?/\|[]}{*") == ''):
